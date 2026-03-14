@@ -1,0 +1,647 @@
+{
+  "company": {
+    "name": "Sustainable Mindz Media Services LLC",
+    "tagline": "Dubai's most trusted digital marketing partner",
+    "description": "A UAE-based digital marketing agency specializing in ethical growth and performance-focused solutions. We amplify brands, drive conversions, and deliver sustainable growth.",
+    "founded": "2016",
+    "experience": "50+ years of combined expertise in media communications across MENA and India",
+    "certifications": ["Google Partner", "Meta Partner", "Microsoft Partner"],
+    "global_presence": "Offices in Dubai, Abu Dhabi, Kochi (India), with global partnerships across Russia and China"
+  },
+
+  "offices": [
+    {
+      "city": "Dubai (HQ)",
+      "address": "Business Venue Building, Oud Metha, P.O. Box 300311",
+      "phone": "+971 58 898 3218",
+      "email": "info@sustainablemindz.com / ak@sustainablemindz.com"
+    },
+    {
+      "city": "Abu Dhabi",
+      "address": "Lamar Tower, P.O. Box 37864, UAE"
+    },
+    {
+      "city": "Kochi, India",
+      "address": "Corrazone, Kalamassery, Ernakulam – 682022",
+      "phone": "+91 90619 09032"
+    }
+  ],
+
+  "track_record": {
+    "campaigns_delivered": "19,000+",
+    "impressions_managed": "20,000+",
+    "clients_served": "85+",
+    "notable_clients": [
+      "Belhasa Motors", "Barjeel", "Q Holding", "Shapoorji Pallonji",
+      "Artha Real Estate", "Danube Properties", "Fakhruddin Properties",
+      "Famous 5", "Hubble Bubble", "IMMAX TV", "Kailani", "VF",
+      "TMW Worldwide", "RDC", "Polycon Gulf", "Pet World Arabia",
+      "Nirvana", "Cherina Beachwear", "Navjeevana", "Multiverse",
+      "Manipal", "Manthena American School", "Laundrybox", "Khind",
+      "Gulf Steel", "GECO", "Esquire", "ESG", "Eastman Solar",
+      "Diva Laundry", "DJ Corner", "Arab Plast", "ADPCH",
+      "Condor Developers", "The Ice", "Kaali Tea", "BLU Chocolate", "INTESOL"
+    ]
+  },
+
+  "services": {
+    "digital_marketing": {
+      "title": "Digital Marketing",
+      "tagline": "Market Acceleration",
+      "description": "Comprehensive digital marketing solutions to grow your brand online and drive real business results.",
+      "sub_services": [
+        {
+          "name": "Social Media Marketing",
+          "description": "Strategic social media campaigns on Instagram, Facebook, LinkedIn, TikTok, and Twitter to grow your audience and drive engagement."
+        },
+        {
+          "name": "Search Engine Marketing (SEM/PPC)",
+          "description": "Google Ads, Bing Ads, and paid search campaigns optimized for maximum ROI. We manage your ad spend efficiently to deliver qualified leads."
+        },
+        {
+          "name": "Lead Generation",
+          "description": "End-to-end lead generation campaigns designed to attract, capture, and convert high-quality prospects for your business."
+        },
+        {
+          "name": "Content Marketing",
+          "description": "Strategic content creation and distribution — blogs, videos, infographics — that educates your audience and builds brand authority."
+        },
+        {
+          "name": "Programmatic Advertising & Ad Tech",
+          "description": "Data-driven programmatic ad buying for precise audience targeting at scale across display, video, and native channels."
+        },
+        {
+          "name": "Digital Strategy",
+          "description": "Full digital marketing strategy development covering channel mix, audience targeting, messaging, budgets, and KPIs."
+        },
+        {
+          "name": "Ad Operations & Partnerships",
+          "description": "Managing ad operations including trafficking, reporting, and platform partnerships to ensure smooth campaign execution."
+        }
+      ]
+    },
+
+    "seo": {
+      "title": "SEO Services",
+      "tagline": "Search Visibility",
+      "description": "Full-spectrum SEO services that improve your search rankings, drive organic traffic, and grow your business long-term.",
+      "methodology": "Comprehensive auditing approach covering site structure, crawlability, content quality, user experience, technical issues, backlink profiles, Core Web Vitals (LCP, FID, CLS), and competitor analysis.",
+      "sub_services": [
+        {
+          "name": "On-Page SEO",
+          "description": "Optimizing website content, meta tags, headings, internal links, and page structure to improve search engine rankings."
+        },
+        {
+          "name": "Off-Page SEO",
+          "description": "Link building, brand mentions, and authority building strategies to strengthen your domain authority."
+        },
+        {
+          "name": "Local SEO",
+          "description": "Optimizing your Google Business Profile and local citations to rank higher in Dubai and UAE local search results."
+        },
+        {
+          "name": "SEO Audit",
+          "description": "Comprehensive technical and website health assessments identifying issues and opportunities for immediate improvement."
+        },
+        {
+          "name": "Arabic SEO",
+          "description": "Specialized SEO services in Arabic language to reach Arabic-speaking audiences across the UAE and wider Middle East."
+        },
+        {
+          "name": "AI SEO",
+          "description": "Technology-enhanced optimization strategies using AI tools to accelerate research, content, and competitive analysis."
+        },
+        {
+          "name": "E-commerce SEO",
+          "description": "Product page optimization, category structure, and technical SEO for online stores to increase organic sales."
+        },
+        {
+          "name": "Real Estate SEO",
+          "description": "Industry-specific SEO for property developers and real estate agencies in Dubai and UAE."
+        },
+        {
+          "name": "Education SEO",
+          "description": "SEO for schools, universities, and training institutions targeting students and parents in the UAE."
+        },
+        {
+          "name": "Healthcare SEO",
+          "description": "Compliant, effective SEO for hospitals, clinics, and healthcare providers in the UAE."
+        },
+        {
+          "name": "Automotive SEO",
+          "description": "SEO solutions tailored for car dealerships, showrooms, and automotive businesses in UAE."
+        },
+        {
+          "name": "Tourism SEO",
+          "description": "SEO for hotels, travel agencies, tour operators, and hospitality businesses targeting tourists and travelers."
+        }
+      ]
+    },
+
+    "influencer_marketing": {
+      "title": "Influencer Marketing",
+      "tagline": "Creator Impact",
+      "description": "Connecting brands with the right influencers to create authentic content and reach targeted audiences.",
+      "sub_services": [
+        {
+          "name": "Event Collaborations",
+          "description": "Coordinating influencer attendance and coverage for brand events, product launches, and activations."
+        },
+        {
+          "name": "Paid Partnerships",
+          "description": "Negotiating and managing paid influencer campaigns with clear deliverables, timelines, and performance metrics."
+        },
+        {
+          "name": "Barter Partnerships",
+          "description": "Product/service exchange collaborations with relevant influencers for organic authentic promotion."
+        },
+        {
+          "name": "Influencer-Generated Content (IGC)",
+          "description": "Sourcing high-quality content created by influencers for use across your owned marketing channels."
+        }
+      ]
+    },
+
+    "digital_advertising": {
+      "title": "Digital Advertising",
+      "tagline": "Targeted Reach",
+      "description": "Precise digital advertising across all major platforms — Google, Meta, LinkedIn, TikTok, Snapchat, and programmatic networks — to reach your exact audience and drive measurable results."
+    },
+
+    "media_planning_buying": {
+      "title": "Media Planning & Buying",
+      "tagline": "Media Strategy",
+      "description": "Strategic media planning and buying across digital and traditional channels to maximize your advertising ROI.",
+      "details": "We analyze your target audience, identify the best media channels, negotiate rates, and execute campaigns that deliver measurable results across TV, radio, print, digital, and OOH media."
+    },
+
+    "web_design_development": {
+      "title": "Web Design & Development",
+      "tagline": "Web Solutions",
+      "description": "Building fast, beautiful, and conversion-optimized websites that represent your brand and drive business goals.",
+      "sub_services": [
+        {
+          "name": "E-commerce Website Development",
+          "description": "Full-featured online stores with payment gateway integration, product management, and optimized checkout flows."
+        },
+        {
+          "name": "Responsive CMS Website Design",
+          "description": "WordPress and other CMS-based websites that are easy for your team to manage and update."
+        },
+        {
+          "name": "Landing Page Design",
+          "description": "High-converting landing pages for campaigns, lead generation, and product promotions."
+        },
+        {
+          "name": "Dynamic & Static Web Development",
+          "description": "Custom web development for both simple static sites and complex dynamic web applications."
+        },
+        {
+          "name": "Content Development",
+          "description": "Website copywriting and content creation aligned with your brand voice and SEO goals."
+        },
+        {
+          "name": "Website Maintenance & Hosting",
+          "description": "Ongoing website support, updates, security monitoring, and reliable hosting solutions."
+        }
+      ]
+    },
+
+    "branding_creative": {
+      "title": "Branding & Creative",
+      "tagline": "Brand Strategy / Design Innovation",
+      "description": "Building distinctive brand identities and creating compelling visual content that resonates with your audience.",
+      "sub_services": [
+        {
+          "name": "Brand Strategy",
+          "description": "Comprehensive brand positioning, messaging, tone of voice, and visual identity guidelines."
+        },
+        {
+          "name": "Logo Design",
+          "description": "Professional logo design that captures your brand essence and works across all media."
+        },
+        {
+          "name": "Brand Assets & Guidelines",
+          "description": "Full brand guidelines, color palettes, typography systems, and asset libraries for consistent brand use."
+        },
+        {
+          "name": "Packaging Design",
+          "description": "Premium packaging design for retail products, including multiple format variations."
+        },
+        {
+          "name": "Video Production & Animation",
+          "description": "Corporate videos, explainer animations, social media reels, and promotional films."
+        },
+        {
+          "name": "Flyer & Brochure Design",
+          "description": "Print and digital marketing collateral including flyers, brochures, and sales materials."
+        },
+        {
+          "name": "Corporate Presentations",
+          "description": "Professionally designed PowerPoint/PDF presentations for pitches, investor decks, and company profiles."
+        }
+      ]
+    },
+
+    "outdoor_marketing": {
+      "title": "Outdoor Marketing",
+      "tagline": "Brand Exposure",
+      "description": "Design and placement of outdoor advertising including billboards, hoardings, outdoor signage, and out-of-home (OOH) advertising materials across UAE."
+    }
+  },
+
+  "case_studies": [
+    {
+      "client": "Condor Developers",
+      "industry": "Real Estate",
+      "background": "UAE-based real estate developer with over 20 years of market presence.",
+      "challenge": "The brand's visual identity, built two decades prior, no longer resonated with contemporary buyers. They lacked a clean, contemporary visual language and struggled to differentiate in a saturated market.",
+      "solution": "Comprehensive rebranding including brand strategy, logo redesign with new logomark and color palette, outdoor signage, hoardings, stationery, sales brochures, pitch decks, social media guidelines, and campaign creative frameworks.",
+      "result": "Achieved a strong, distinctive market presence with a unique color identity and modern visual language — consistent across physical and digital touchpoints.",
+      "services_used": ["Branding & Identity", "Creative Services", "Digital Marketing"]
+    },
+    {
+      "client": "The Ice",
+      "industry": "Food & Beverage (Ice Cream)",
+      "background": "UAE-based ice cream and popsicle brand offering fresh, healthy treats from locally sourced ingredients, targeting families and younger audiences.",
+      "challenge": "Despite quality products, the brand's existing visual identity looked generic and similar to competitors. It couldn't stand out on retail shelves or digital platforms.",
+      "solution": "Comprehensive rebranding with bold, peppy, and playful design elements. Logo refinement, cohesive visual systems, updated packaging, and social media campaigns across Instagram and TikTok featuring product showcases and behind-the-scenes content.",
+      "result": "Positioned as a visually bold and memorable ice cream brand with strong shelf and digital presence — instantly recognizable to its target audience.",
+      "services_used": ["Branding & Identity", "Social Media Marketing", "Creative Services"]
+    },
+    {
+      "client": "Kaali Tea",
+      "industry": "Beverage (Premium Tea)",
+      "background": "Premium Indian tea brand with decades of sourcing expertise rooted in Darjeeling tea heritage, targeting luxury tea connoisseurs.",
+      "challenge": "The brand lacked a distinctive identity despite strong product heritage. Needed a complete brand identity from the ground up to enter the luxury tea space.",
+      "solution": "Full luxury brand build: brand strategy and positioning, logo design, visual identity system, brand guidelines and playbook, premium packaging for multiple formats (250g, 1kg, canisters, 50g samples), website design direction, and launch-ready digital assets.",
+      "result": "Distinctive luxury brand identity blending Indian tea heritage with global sophistication. Launched with cohesive visual language and premium packaging as a sought-after luxury brand.",
+      "services_used": ["Branding & Identity", "Web Design", "Creative Services"]
+    },
+    {
+      "client": "BLU Chocolate",
+      "industry": "Food & Beverage (Luxury Chocolate)",
+      "background": "The first Emirati artisanal bean-to-bar chocolatier in the Middle East, with retail presence across major UAE malls targeting luxury clientele.",
+      "challenge": "Despite strong products and heritage, BLU lacked cohesive brand identity and structured digital marketing. Needed clearer storytelling around its Emirati roots and bean-to-bar craftsmanship.",
+      "solution": "Rebranding with visual identity emphasizing Emirati heritage including logo concepts, color palettes, packaging, signage, and retail applications. Platform-led social media strategy with content pillars spanning education, product showcases, behind-the-scenes narratives, cultural storytelling, and customer experiences.",
+      "result": "Distinctive luxury brand identity and scalable digital blueprint — strengthened positioning as a premium Emirati chocolate brand with foundations for long-term digital growth.",
+      "services_used": ["Branding & Identity", "Social Media Marketing", "Creative Services"]
+    },
+    {
+      "client": "INTESOL",
+      "industry": "Engineering & Interior Design",
+      "background": "Dubai-based engineering and design firm offering premium interior design, architectural engineering, space planning, project management, and custom furniture across residential, commercial, and hospitality sectors.",
+      "challenge": "Despite strong technical expertise and portfolio, INTESOL lacked cohesive brand identity and structured digital presence, limiting visibility and credibility in a competitive market.",
+      "solution": "Two-part strategy: (1) Rebranding — brand strategy, positioning, logo, typography, brand guidelines, office stationery, uniforms, safety vests, multiple service brochures and company profiles. (2) Digital — full website design and launch, LinkedIn-focused social media strategy, SEO audit and optimization roadmap, performance marketing across Google, Meta, and LinkedIn.",
+      "result": "Positioned as a trusted, modern, and credible engineering partner ready to scale visibility and lead generation across UAE, with unified brand identity across all touchpoints.",
+      "services_used": ["Branding & Identity", "Web Design & Development", "SEO", "Performance Marketing", "Social Media"]
+    },
+    {
+      "client": "DJ Corner",
+      "industry": "Entertainment / Music",
+      "background": "UAE-based entertainment brand.",
+      "challenge": "Needed to increase sales and grow online reach.",
+      "solution": "Launched social and Google campaigns with creative visuals.",
+      "result": "Increased sales and expanded online reach significantly.",
+      "services_used": ["Social Media Marketing", "Google Ads", "Creative Services"]
+    },
+    {
+      "client": "Kaalitea (earlier reference)",
+      "industry": "Beverage",
+      "background": "Tea brand looking to grow online orders and reservations.",
+      "challenge": "Limited online growth and reservations.",
+      "solution": "Integrated advertising campaigns across social and digital channels.",
+      "result": "3X growth in online orders and reservations.",
+      "services_used": ["Digital Marketing", "Social Media Advertising"]
+    }
+  ],
+
+  "testimonials": [
+    {
+      "name": "Sachin Rajaram",
+      "title": "Media Manager",
+      "company": "TMW Worldwide",
+      "quote": "Quality of their work is top-notch. They are constantly innovating with new tech and their approach to campaigns stands out."
+    },
+    {
+      "name": "Tammy Tusek",
+      "title": "Principal",
+      "company": "Manthena American School",
+      "quote": "Their expertise in branding and 360-degree approach from strategy to implementation is impressive and highly effective."
+    },
+    {
+      "name": "Azim Punnilath Ummer",
+      "title": "Media Manager",
+      "company": "Lulu Exchange",
+      "quote": "They possess all the creative skills that make them stand out from other agencies."
+    },
+    {
+      "name": "Prathish Cherian",
+      "title": "General Manager",
+      "company": "Masscom Global",
+      "quote": "Always willing to go the extra mile. You can always count on them to deliver the best quality work."
+    }
+  ],
+
+  "industries_served": [
+    "Real Estate", "Automotive", "Healthcare", "E-commerce & Retail",
+    "Tourism & Hospitality", "Food & Beverage", "Finance",
+    "Education", "Technology", "Engineering & Construction",
+    "Luxury & Lifestyle", "Entertainment"
+  ],
+
+  "methodology": {
+    "approach": "Connect → Engage → Deliver",
+    "steps": [
+      "Connect — Targeted outreach to reach the right audience at the right moment",
+      "Engage — Content-driven interactions that build relationships and trust",
+      "Deliver — Data-driven conversion strategies that turn engagement into results"
+    ]
+  },
+
+  "why_choose_us": [
+    "Certified Google, Meta, and Microsoft Partner",
+    "19,000+ successful campaigns delivered",
+    "50+ years of combined team experience in MENA and India markets",
+    "Founded in 2016 with a proven track record since",
+    "Data-driven approach with transparent reporting",
+    "Dedicated account managers for every client",
+    "Ethical and sustainable growth strategies",
+    "Local expertise in UAE & Middle East markets",
+    "Arabic and English bilingual capabilities",
+    "Full-service agency — strategy to execution under one roof",
+    "Offices in Dubai, Abu Dhabi, and Kochi (India)"
+  ],
+
+  "process": {
+    "steps": [
+      "Discovery & Strategy — We understand your business goals and target audience",
+      "Planning — We create a tailored marketing plan with clear KPIs",
+      "Execution — Our team implements campaigns across chosen channels",
+      "Monitoring — Real-time tracking and optimization",
+      "Reporting — Transparent reports with insights and next steps"
+    ]
+  },
+
+  "faqs": [
+
+    {
+      "_category": "Getting Started",
+      "question": "How do I get started with Sustainable Mindz?",
+      "answer": "Simply reach out to us! Email info@sustainablemindz.com or call +971 58 898 3218 to schedule a free consultation. We'll understand your goals and propose the best strategy for your business."
+    },
+    {
+      "question": "How do I get a quote?",
+      "answer": "Contact us at info@sustainablemindz.com or call +971 58 898 3218. We provide custom quotes based on your specific goals, industry, and budget — no one-size-fits-all packages."
+    },
+    {
+      "question": "Is the first consultation free?",
+      "answer": "Yes! We offer a free initial consultation where we understand your business, goals, and current challenges before recommending any services."
+    },
+    {
+      "question": "How quickly can you start working on my project?",
+      "answer": "Typically we can onboard new clients within 3–5 business days after signing the agreement and receiving initial information about your brand."
+    },
+
+    {
+      "_category": "Pricing & Packages",
+      "question": "What is your pricing?",
+      "answer": "Our pricing is fully customized based on your requirements, business size, and goals. We don't believe in generic packages — every proposal is tailored. Contact us for a free consultation and custom quote."
+    },
+    {
+      "question": "Do you have fixed monthly packages?",
+      "answer": "We prefer custom proposals over rigid packages, as every business has different needs. However, we do have flexible retainer options for ongoing services like SEO and social media management. Ask us for details."
+    },
+    {
+      "question": "What is the minimum budget to work with you?",
+      "answer": "We work with businesses of all sizes and budgets. There's no fixed minimum — we'll recommend a plan that makes sense for your current stage and goals. Reach us at info@sustainablemindz.com to discuss."
+    },
+    {
+      "question": "Do you offer any discounts for long-term contracts?",
+      "answer": "Yes, we offer preferential pricing for clients who commit to 6-month or 12-month retainers. Contact us to discuss long-term partnership options."
+    },
+
+    {
+      "_category": "SEO Questions",
+      "question": "How long does SEO take to show results?",
+      "answer": "SEO is a long-term strategy. You can typically expect measurable improvements in 3–6 months, with significant results within 6–12 months depending on your industry competition and website's current health."
+    },
+    {
+      "question": "Do you do SEO for Arabic websites?",
+      "answer": "Absolutely. We specialize in Arabic SEO — including Arabic keyword research, Arabic content optimization, and targeting Arabic-speaking audiences across the UAE and wider Middle East region."
+    },
+    {
+      "question": "Can you improve my Google ranking?",
+      "answer": "Yes — improving Google rankings is a core part of what we do. We use a combination of on-page SEO, technical SEO, content strategy, and link building to move your website up in search results."
+    },
+    {
+      "question": "Do you do local SEO for Dubai businesses?",
+      "answer": "Yes! We specialize in local SEO for Dubai and UAE businesses — including Google Business Profile optimization, local citations, and location-based keyword targeting so customers in your area find you first."
+    },
+    {
+      "question": "What is the difference between on-page and off-page SEO?",
+      "answer": "On-page SEO involves optimizing your website itself — content, titles, structure, and speed. Off-page SEO involves building your authority through backlinks and mentions from other websites. We handle both."
+    },
+    {
+      "question": "Do you provide SEO reports?",
+      "answer": "Yes. We provide regular, transparent SEO reports covering keyword rankings, organic traffic growth, backlinks gained, and recommendations — so you always know exactly what's happening."
+    },
+    {
+      "question": "Do you offer AI SEO services?",
+      "answer": "Yes. We offer AI SEO — using advanced AI tools to accelerate keyword research, content optimization, and competitive analysis, giving your brand a faster path to better search visibility."
+    },
+
+    {
+      "_category": "Social Media & Digital Marketing",
+      "question": "Which social media platforms do you manage?",
+      "answer": "We manage all major platforms including Instagram, Facebook, LinkedIn, TikTok, Twitter/X, Snapchat, and YouTube — depending on where your target audience is most active."
+    },
+    {
+      "question": "Do you create content for social media?",
+      "answer": "Yes — content creation is included in our social media management service. We handle copywriting, graphic design, video editing, and scheduling across your platforms."
+    },
+    {
+      "question": "Do you run paid ads on social media?",
+      "answer": "Yes. We run paid advertising campaigns on Meta (Facebook & Instagram), TikTok, LinkedIn, Snapchat, and more — with precise audience targeting, A/B testing, and ROI optimization."
+    },
+    {
+      "question": "Can you manage our Instagram account?",
+      "answer": "Yes! Instagram management is one of our most popular services. We handle content creation, posting, stories, reels, hashtag strategy, community management, and paid Instagram ads."
+    },
+    {
+      "question": "Do you run Google Ads (PPC)?",
+      "answer": "Yes. As a certified Google Partner, we manage Google Search Ads, Display Ads, Shopping Ads, and YouTube Ads — all optimized to deliver maximum ROI on your ad spend."
+    },
+    {
+      "question": "What is programmatic advertising?",
+      "answer": "Programmatic advertising is automated, data-driven digital ad buying that targets your exact audience across websites, apps, and platforms in real time. We use programmatic advertising to reach the right people at the right moment at scale."
+    },
+
+    {
+      "_category": "Web Design & Development",
+      "question": "Can you build a website for my business?",
+      "answer": "Yes! We design and develop all types of websites — corporate sites, e-commerce stores, landing pages, and CMS-based sites. We build fast, mobile-friendly, and conversion-optimized websites."
+    },
+    {
+      "question": "How much does a website cost?",
+      "answer": "Website pricing depends on the complexity, number of pages, and features required. We provide custom quotes for every project. Contact us at info@sustainablemindz.com for a free estimate."
+    },
+    {
+      "question": "How long does it take to build a website?",
+      "answer": "A standard business website typically takes 3–6 weeks. A complex e-commerce website may take 6–12 weeks. Timelines depend on scope, content readiness, and feedback turnaround."
+    },
+    {
+      "question": "Do you build e-commerce websites?",
+      "answer": "Yes. We build full-featured e-commerce websites with payment gateway integration, product catalog management, inventory tracking, and optimized checkout flows."
+    },
+    {
+      "question": "Do you offer website maintenance after launch?",
+      "answer": "Yes — we offer ongoing website maintenance packages that include updates, security monitoring, performance optimization, backups, and technical support."
+    },
+    {
+      "question": "Do you build WordPress websites?",
+      "answer": "Yes. We build and customize WordPress websites that are easy for your team to manage and update without needing technical knowledge."
+    },
+
+    {
+      "_category": "Branding & Creative",
+      "question": "Do you design logos?",
+      "answer": "Yes! Our creative team designs professional logos that capture your brand identity. We deliver multiple concepts with revisions and provide final files in all required formats."
+    },
+    {
+      "question": "Can you create videos for my brand?",
+      "answer": "Absolutely. We produce corporate videos, explainer animations, social media reels, product videos, and promotional films — all professionally crafted to represent your brand."
+    },
+    {
+      "question": "Do you help with brand identity and strategy?",
+      "answer": "Yes. We develop complete brand identities including logo, color palette, typography, tone of voice, messaging guidelines, and brand strategy documents."
+    },
+    {
+      "question": "Can you design a company profile or presentation?",
+      "answer": "Yes. We design polished corporate presentations, company profiles, pitch decks, and investor presentations in PowerPoint and PDF formats."
+    },
+    {
+      "question": "Can you help rebrand an existing business?",
+      "answer": "Absolutely. We've rebranded established businesses like Condor Developers (20+ years in market), The Ice, BLU Chocolate, and INTESOL — refreshing their visual identity and digital presence while preserving brand equity."
+    },
+
+    {
+      "_category": "Influencer Marketing",
+      "question": "Can you connect us with influencers in the UAE?",
+      "answer": "Yes. We have a strong network of influencers across the UAE and wider GCC region — from nano-influencers to celebrities — across all niches including lifestyle, fashion, food, real estate, and more."
+    },
+    {
+      "question": "How do you choose the right influencer for my brand?",
+      "answer": "We match influencers based on audience demographics, engagement rates, niche relevance, content quality, and brand fit — ensuring authentic partnerships that drive real results."
+    },
+    {
+      "question": "Do you manage barter/gifting campaigns with influencers?",
+      "answer": "Yes. We handle both paid influencer partnerships and barter/gifting arrangements, managing outreach, coordination, briefing, and content approval throughout."
+    },
+
+    {
+      "_category": "Case Studies & Results",
+      "question": "Do you have any case studies?",
+      "answer": "Yes! We've worked on several published case studies. Some highlights: Condor Developers (real estate rebranding — modern identity across all touchpoints), The Ice (food brand rebranding — bold shelf and digital presence), BLU Chocolate (first Emirati artisanal chocolatier — luxury brand identity and digital strategy), INTESOL (engineering firm — full rebrand plus website, SEO, and performance marketing), and Kaali Tea (luxury tea brand launched from scratch). Ask about any specific one!"
+    },
+    {
+      "question": "Can you share the Condor Developers case study?",
+      "answer": "Condor Developers is a UAE real estate developer with 20+ years in the market. They came to us needing a modern rebrand — their identity was outdated and generic. We delivered a full rebrand: new logo, color palette, outdoor signage, hoardings, stationery, sales brochures, pitch decks, and social media guidelines. Result: a strong, distinctive market presence with a contemporary visual language that sets them apart in UAE real estate."
+    },
+    {
+      "question": "Can you share the BLU Chocolate case study?",
+      "answer": "BLU Chocolate is the first Emirati artisanal bean-to-bar chocolatier in the Middle East, with retail presence across major UAE malls. They needed a cohesive brand identity and digital strategy that told their story. We built their visual identity emphasizing Emirati heritage, designed packaging and retail applications, and launched a platform-led social media strategy. Result: a distinctive luxury brand with a scalable digital blueprint."
+    },
+    {
+      "question": "Can you share the INTESOL case study?",
+      "answer": "INTESOL is a Dubai engineering and interior design firm. Despite strong work, they lacked brand identity and digital presence. We delivered a complete rebrand (logo, guidelines, brochures, uniforms, stationery) plus full website design and launch, LinkedIn social strategy, SEO audit, and performance marketing on Google, Meta, and LinkedIn. Result: a trusted, credible brand ready to scale lead generation across UAE."
+    },
+    {
+      "question": "What results have you achieved for clients?",
+      "answer": "Results vary by project and service. Some highlights: 3X growth in online orders for a beverage brand through integrated ad campaigns; brand transformations for real estate, F&B, and engineering clients that improved market positioning; 19,000+ campaigns delivered across our client base. We focus on sustainable, measurable growth rather than vanity metrics."
+    },
+
+    {
+      "_category": "About the Company",
+      "question": "When was Sustainable Mindz founded?",
+      "answer": "We were founded in 2016. Our team brings over 50 years of combined expertise in media communications across the MENA region and India."
+    },
+    {
+      "question": "Where is Sustainable Mindz located?",
+      "answer": "Our headquarters is in Dubai at Business Venue Building, Oud Metha. We also have an office in Abu Dhabi (Lamar Tower) and in Kochi, India. We also have global partnerships in Russia and China. Reach us at +971 58 898 3218 or info@sustainablemindz.com."
+    },
+    {
+      "question": "Are you a Google-certified agency?",
+      "answer": "Yes! We are a certified Google Partner, Meta Partner, and Microsoft Partner — which means our team is trained and certified to the highest standards in digital advertising."
+    },
+    {
+      "question": "How many campaigns have you delivered?",
+      "answer": "We have delivered 19,000+ campaigns and managed 20,000+ impressions for clients across a wide range of industries in the UAE and beyond."
+    },
+    {
+      "question": "What is the experience level of your team?",
+      "answer": "Our team collectively brings over 50 years of combined expertise in media communications across MENA and India. We've been operating since 2016 and have worked with 85+ clients across multiple industries."
+    },
+    {
+      "question": "What industries do you work with?",
+      "answer": "We work with clients across Real Estate, Automotive, Healthcare, E-commerce, Tourism & Hospitality, Food & Beverage, Finance, Education, Technology, Engineering & Construction, and Luxury & Lifestyle sectors."
+    },
+    {
+      "question": "Do you work with international clients?",
+      "answer": "Yes. While we specialize in the UAE and Middle East market, we work with international brands that want to establish or grow their presence in the region. We have global partnerships in Russia and China as well."
+    },
+    {
+      "question": "Do you work with small businesses and startups?",
+      "answer": "Absolutely. We work with businesses at every stage — from early-stage startups to large enterprises. We scale our services and budgets to fit your needs and growth stage."
+    },
+    {
+      "question": "Who are some of your notable clients?",
+      "answer": "We have worked with a wide range of brands including Belhasa Motors, Danube Properties, Shapoorji Pallonji, Barjeel, Q Holding, Manthena American School, Lulu Exchange, TMW Worldwide, Manipal, Gulf Steel, Fakhruddin Properties, and many more across real estate, retail, education, finance, and other sectors."
+    },
+    {
+      "question": "Do you have offices outside Dubai?",
+      "answer": "Yes — we have offices in Abu Dhabi (Lamar Tower) and Kochi, India (Corrazone, Kalamassery). Our India office contact is +91 90619 09032. We also have global partnerships in Russia and China."
+    },
+
+    {
+      "_category": "Working Process & Reporting",
+      "question": "What is your working process?",
+      "answer": "Our process: (1) Discovery — we understand your goals; (2) Planning — we build a tailored strategy; (3) Execution — our team runs the campaigns; (4) Monitoring — real-time optimization; (5) Reporting — transparent results and next steps. We call this Connect, Engage, Deliver."
+    },
+    {
+      "question": "How do you report results?",
+      "answer": "We provide regular performance reports (monthly at minimum, more frequently on request) covering KPIs, campaign metrics, insights, and recommendations — all explained in clear, easy-to-understand language."
+    },
+    {
+      "question": "Will we have a dedicated account manager?",
+      "answer": "Yes. Every client is assigned a dedicated account manager as their main point of contact — someone who understands your business and is responsible for your success."
+    },
+    {
+      "question": "Do you sign contracts?",
+      "answer": "Yes, we work with formal agreements that outline scope, deliverables, timelines, and terms — so both sides are fully aligned and protected."
+    },
+    {
+      "question": "Can I see results and campaign performance in real time?",
+      "answer": "Yes. We set up live dashboards and reporting access for our clients where applicable, so you can monitor campaign performance at any time."
+    },
+
+    {
+      "_category": "Contact & Support",
+      "question": "How can I contact Sustainable Mindz?",
+      "answer": "You can reach us by: Email — info@sustainablemindz.com or ak@sustainablemindz.com | Phone/WhatsApp — +971 58 898 3218 | Visit — Business Venue Building, Oud Metha, Dubai. We typically respond within a few hours during business hours."
+    },
+    {
+      "question": "What are your business hours?",
+      "answer": "Our team is available Monday to Friday, 9 AM – 6 PM UAE time. You can also email us anytime at info@sustainablemindz.com and we'll respond promptly."
+    },
+    {
+      "question": "Do you offer a free consultation?",
+      "answer": "Yes! We offer a free, no-obligation consultation where we listen to your goals and suggest the best approach. Book yours by contacting info@sustainablemindz.com or calling +971 58 898 3218."
+    },
+    {
+      "question": "Do you have a WhatsApp number?",
+      "answer": "Yes — you can reach us on WhatsApp at +971 58 898 3218. We also have an India contact number: +91 90619 09032."
+    }
+
+  ]
+}

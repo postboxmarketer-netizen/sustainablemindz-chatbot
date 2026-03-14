@@ -1,0 +1,20 @@
+# Secrets — never commit these
+backend/.env
+backend/token.json
+backend/oauth-client.json
+backend/service-account.json
+
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
