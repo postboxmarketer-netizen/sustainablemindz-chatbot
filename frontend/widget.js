@@ -355,13 +355,17 @@
         recognition = new SR();
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = navigator.language || "en-US";
+        recognition.lang = "en-US";
         recognition.maxAlternatives = 1;
 
+        recognition.onstart = () => {
+          input.placeholder = "Listening… speak now";
+        };
         recognition.onresult = (e) => {
           const transcript = e.results[0][0].transcript;
           if (transcript.trim()) {
             input.value = transcript.trim();
+            input.placeholder = "Ask about our services…";
             input.dispatchEvent(new Event("input"));
             setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
           }
@@ -370,22 +374,24 @@
           isRecording = false;
           micBtn.classList.remove("recording");
           micBtn.title = "Speak your message";
+          input.placeholder = "Ask about our services…";
           recognition = null;
         };
         recognition.onerror = (e) => {
           isRecording = false;
           micBtn.classList.remove("recording");
+          input.placeholder = "Ask about our services…";
           recognition = null;
           if (e.error === "not-allowed" || e.error === "permission-denied") {
-            addMessage("bot", "Voice recognition was blocked by a browser security policy on this site. Please type your message instead, or contact the site admin.");
+            addMessage("bot", "Microphone access was denied. Tap the lock icon 🔒 in your browser address bar → set Microphone to Allow → then refresh and try again.");
           } else if (e.error === "audio-capture") {
             addMessage("bot", "Your microphone couldn't be accessed. Make sure no other app is using it, then try again.");
           } else if (e.error === "service-not-allowed") {
-            addMessage("bot", "Voice input isn't supported on this browser. Try Chrome on desktop or Android, then type your message for now.");
+            addMessage("bot", "Voice input isn't supported on this browser. Try Chrome on desktop or Android.");
           } else if (e.error === "network") {
-            addMessage("bot", "Voice recognition couldn't connect. Please check your internet connection or type your message instead.");
+            addMessage("bot", "Voice recognition couldn't connect. Check your internet connection or type your message instead.");
           } else if (e.error === "no-speech" || e.error === "aborted") {
-            // silently ignore — user stopped recording or no speech detected
+            // silently ignore — user stopped or no speech detected
           } else {
             addMessage("bot", `Voice input error (${e.error}). Please type your message instead.`);
           }
@@ -396,6 +402,7 @@
         } catch (err) {
           isRecording = false;
           micBtn.classList.remove("recording");
+          input.placeholder = "Ask about our services…";
           recognition = null;
         }
       }
@@ -410,25 +417,7 @@
         micBtn.classList.add("recording");
         micBtn.title = "Listening… click to stop";
         window.speechSynthesis && window.speechSynthesis.cancel();
-
-        // Pre-flight: test actual mic access via getUserMedia first.
-        // This catches OS-level blocks (macOS System Settings, Windows Privacy)
-        // and server-side Permissions-Policy headers — which all show as
-        // "Allowed" in Chrome site settings but still block audio capture.
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-          navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-              stream.getTracks().forEach(t => t.stop()); // release immediately
-              startRecognition();
-            })
-            .catch(() => {
-              isRecording = false;
-              micBtn.classList.remove("recording");
-              addMessage("bot", "Microphone is blocked at the system level.\n\n• Mac: System Settings → Privacy & Security → Microphone → enable your browser\n• Windows: Settings → Privacy & Security → Microphone → enable your browser\n\nThen refresh the page and try again.");
-            });
-        } else {
-          startRecognition();
-        }
+        startRecognition();
       });
     }
 
