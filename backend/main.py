@@ -1,5 +1,8 @@
 import os
+import csv
+import io
 import json
+import sqlite3
 from pathlib import Path
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -11,6 +14,62 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 load_dotenv()
+
+DUBAI_TZ = ZoneInfo("Asia/Dubai")
+
+# ── Query Logging (SQLite) ────────────────────────────────────────────────────
+_DATA_DIR = Path(os.environ.get("DATA_DIR", str(Path(__file__).parent / "data")))
+_DATA_DIR.mkdir(parents=True, exist_ok=True)
+DB_PATH = _DATA_DIR / "queries.db"
+REPORT_SECRET = os.environ.get("REPORT_SECRET", "")
+
+def _init_db():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS queries (
+                id       INTEGER PRIMARY KEY AUTOINCREMENT,
+                ts       TEXT NOT NULL,
+                query    TEXT NOT NULL,
+                topic    TEXT NOT NULL,
+                booking  INTEGER DEFAULT 0
+            )
+        """)
+        conn.commit()
+
+_init_db()
+
+_TOPICS = {
+    "SEO":                ["seo", "search engine", "ranking", "organic", "keyword", "google ranking"],
+    "Social Media":       ["social media", "instagram", "facebook", "tiktok", "linkedin", "twitter", "youtube"],
+    "Web Design":         ["website", "web design", "landing page", "ecommerce", "development", "web dev"],
+    "Digital Advertising":["ads", "advertising", "ppc", "google ads", "meta ads", "campaign", "paid"],
+    "Branding":           ["brand", "logo", "identity", "branding", "design"],
+    "Content Marketing":  ["content", "blog", "article", "copywriting", "writing"],
+    "Video & Animation":  ["video", "animation", "reel", "explainer"],
+    "Lead Generation":    ["lead", "leads", "generate", "lead gen"],
+    "Influencer":         ["influencer", "creator", "ugc"],
+    "Media Planning":     ["media plan", "media buy", "outdoor", "ooh", "radio", "tv"],
+    "Pricing":            ["price", "cost", "how much", "pricing", "rate", "budget", "affordable"],
+    "Consultation":       ["book", "consultation", "meeting", "appointment", "schedule", "call", "talk"],
+}
+
+def _detect_topic(query: str) -> str:
+    q = query.lower()
+    for topic, kws in _TOPICS.items():
+        if any(kw in q for kw in kws):
+            return topic
+    return "General"
+
+def log_query(query: str, booking: bool = False):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute(
+                "INSERT INTO queries (ts, query, topic, booking) VALUES (?, ?, ?, ?)",
+                (datetime.now(DUBAI_TZ).isoformat(), query, _detect_topic(query), int(booking)),
+            )
+            conn.commit()
+    except Exception:
+        pass
 
 # ── App Setup ────────────────────────────────────────────────────────────────
 app = FastAPI(title="Sustainable Mindz Chatbot API")
@@ -38,7 +97,6 @@ client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 # ── Google Calendar Setup ─────────────────────────────────────────────────────
 GCAL_CALENDAR_ID = os.environ.get("GOOGLE_CALENDAR_ID", "primary")
-DUBAI_TZ = ZoneInfo("Asia/Dubai")
 TOKEN_FILE = Path(__file__).parent / "token.json"
 GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/calendar",
@@ -296,10 +354,106 @@ class ChatResponse(BaseModel):
     input_tokens: int
     output_tokens: int
 
+# ── Report Helpers ────────────────────────────────────────────────────────────
+def _send_report_email(month_label: str, csv_bytes: bytes, total: int):
+    creds = get_google_creds()
+    if not creds:
+        return
+    try:
+        import base64
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.mime.base import MIMEBase
+        from email import encoders
+        from googleapiclient.discovery import build
+
+        msg = MIMEMultipart()
+        msg["to"] = "ak@sustainablemindz.com"
+        msg["from"] = "ak@sustainablemindz.com"
+        msg["subject"] = f"Chatbot Monthly Report — {month_label}"
+        msg.attach(MIMEText(
+            f"Hi,\n\nAttached is the chatbot query report for {month_label}.\n"
+            f"Total queries: {total}\n\nSustainable Mindz Chatbot"
+        ))
+        att = MIMEBase("text", "csv")
+        att.set_payload(csv_bytes)
+        encoders.encode_base64(att)
+        att.add_header("Content-Disposition",
+                       f'attachment; filename="chatbot-{month_label.replace(" ", "-")}.csv"')
+        msg.attach(att)
+
+        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+        build("gmail", "v1", credentials=creds).users().messages().send(
+            userId="me", body={"raw": raw}
+        ).execute()
+    except Exception:
+        pass
+
+
+def _build_report_csv(rows) -> bytes:
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["Date", "Time (UAE)", "User Query", "Topic", "Booking"])
+    topic_counts: dict[str, int] = {}
+    for ts, query, topic, booking in rows:
+        dt = datetime.fromisoformat(ts)
+        w.writerow([dt.strftime("%Y-%m-%d"), dt.strftime("%H:%M"),
+                    query, topic, "Yes" if booking else "No"])
+        topic_counts[topic] = topic_counts.get(topic, 0) + 1
+    w.writerow([])
+    w.writerow(["--- SUMMARY ---"])
+    w.writerow(["Topic", "Queries"])
+    for topic, count in sorted(topic_counts.items(), key=lambda x: -x[1]):
+        w.writerow([topic, count])
+    w.writerow(["TOTAL", len(rows)])
+    return buf.getvalue().encode("utf-8")
+
+
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "Sustainable Mindz Chatbot"}
+
+
+@app.get("/admin/monthly-report")
+def monthly_report(secret: str = "", month: str = ""):
+    """
+    Generate and email the monthly query CSV.
+    - secret: must match REPORT_SECRET env var (if set)
+    - month:  optional YYYY-MM (defaults to last calendar month)
+    """
+    if REPORT_SECRET and secret != REPORT_SECRET:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    today = datetime.now(DUBAI_TZ)
+    if month:
+        try:
+            first = datetime.strptime(month, "%Y-%m").replace(tzinfo=DUBAI_TZ)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="month must be YYYY-MM")
+    else:
+        first = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        first = (first - timedelta(days=1)).replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    next_month = (first.replace(day=28) + timedelta(days=4)).replace(day=1)
+    month_label = first.strftime("%B %Y")
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            rows = conn.execute(
+                "SELECT ts, query, topic, booking FROM queries "
+                "WHERE ts >= ? AND ts < ? ORDER BY ts",
+                (first.isoformat(), next_month.isoformat()),
+            ).fetchall()
+    except Exception:
+        rows = []
+
+    if not rows:
+        return {"status": "no_data", "month": month_label, "queries": 0}
+
+    csv_bytes = _build_report_csv(rows)
+    _send_report_email(month_label, csv_bytes, len(rows))
+    return {"status": "sent", "month": month_label, "queries": len(rows)}
 
 
 @app.post("/chat", response_model=ChatResponse)
@@ -354,8 +508,10 @@ def chat(req: ChatRequest):
                 f"on {args['date']} at {args['time_slot']} — mention your name ({args['name']}) and we'll sort it straight away."
             )
 
+        log_query(message, booking=True)
         return ChatResponse(reply=reply_text, input_tokens=input_tokens, output_tokens=output_tokens)
 
     # ── Normal text reply ─────────────────────────────────────────────────────
     reply_text = response.content[0].text
+    log_query(message, booking=False)
     return ChatResponse(reply=reply_text, input_tokens=input_tokens, output_tokens=output_tokens)
