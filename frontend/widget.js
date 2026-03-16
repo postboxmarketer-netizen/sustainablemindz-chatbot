@@ -114,8 +114,10 @@
     #sm-close-btn:hover { opacity: 1; }
 
     #sm-chat-messages {
-      flex: 1; overflow-y: auto; padding: 16px 16px 8px;
-      display: flex; flex-direction: column; gap: 12px;
+      flex: 1 1 0 !important; min-height: 0 !important;
+      overflow-y: auto !important; overflow-x: hidden !important;
+      padding: 16px 16px 8px;
+      display: flex !important; flex-direction: column; gap: 12px;
       scroll-behavior: smooth;
     }
     #sm-chat-messages::-webkit-scrollbar { width: 4px; }
@@ -373,7 +375,12 @@
           micBtn.classList.add("recording");
           micBtn.title = "Listening… click to stop";
           window.speechSynthesis && window.speechSynthesis.cancel();
-          recognition.start();
+          try {
+            recognition.start();
+          } catch (err) {
+            isRecording = false;
+            micBtn.classList.remove("recording");
+          }
         }
       });
     }
@@ -490,7 +497,9 @@
 
     function scrollToBottom() {
       requestAnimationFrame(() => {
-        messages.scrollTop = messages.scrollHeight;
+        requestAnimationFrame(() => {
+          messages.scrollTop = messages.scrollHeight;
+        });
       });
     }
 
