@@ -272,6 +272,10 @@
 
     document.body.appendChild(wrapper);
 
+    // Force scroll styles via JS to override any WordPress theme interference
+    const messagesEl = wrapper.querySelector("#sm-chat-messages");
+    messagesEl.style.cssText += ";overflow-y:scroll!important;min-height:0!important;flex:1 1 0!important;";
+
     // Wire up
     const bubble   = document.getElementById("sm-chat-bubble");
     const window_  = document.getElementById("sm-chat-window");
@@ -334,53 +338,62 @@
 
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      micBtn.style.display = "none"; // hide if browser doesn't support it
+      micBtn.style.display = "none";
     } else {
-      const recognition = new SR();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = "en-US";
+      let recognition = null;
 
-      recognition.onresult = (e) => {
-        const transcript = e.results[0][0].transcript;
-        input.value = transcript;
-        input.dispatchEvent(new Event("input"));
-        if (transcript.trim()) {
-          setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
+      function startRecognition() {
+        recognition = new SR();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+
+        recognition.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          input.value = transcript;
+          input.dispatchEvent(new Event("input"));
+          if (transcript.trim()) {
+            setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
+          }
+        };
+        recognition.onend = () => {
+          isRecording = false;
+          micBtn.classList.remove("recording");
+          micBtn.title = "Speak your message";
+          recognition = null;
+        };
+        recognition.onerror = (e) => {
+          isRecording = false;
+          micBtn.classList.remove("recording");
+          recognition = null;
+          if (e.error === "not-allowed" || e.error === "permission-denied") {
+            addMessage("bot", "Microphone access was blocked. Please click the 🔒 icon in your browser address bar, set Microphone to Allow, then click the mic button again.");
+          } else if (e.error === "no-speech") {
+            // silently ignore
+          } else {
+            addMessage("bot", "Voice input isn't available right now. Please type your message instead.");
+          }
+        };
+
+        try {
+          recognition.start();
+        } catch (err) {
+          isRecording = false;
+          micBtn.classList.remove("recording");
+          recognition = null;
         }
-      };
-      recognition.onend = () => {
-        isRecording = false;
-        micBtn.classList.remove("recording");
-        micBtn.title = "Speak your message";
-      };
-      recognition.onerror = (e) => {
-        isRecording = false;
-        micBtn.classList.remove("recording");
-        if (e.error === "not-allowed" || e.error === "permission-denied") {
-          addMessage("bot", "Microphone access was blocked. Please click the 🔒 icon in your browser address bar and allow microphone access, then try again.");
-        } else if (e.error === "no-speech") {
-          // silently ignore — user just didn't speak
-        } else {
-          addMessage("bot", "Voice input isn't available right now. Please type your message instead.");
-        }
-      };
+      }
 
       micBtn.addEventListener("click", () => {
         if (isTyping) return;
-        if (isRecording) {
+        if (isRecording && recognition) {
           recognition.stop();
         } else {
           isRecording = true;
           micBtn.classList.add("recording");
           micBtn.title = "Listening… click to stop";
           window.speechSynthesis && window.speechSynthesis.cancel();
-          try {
-            recognition.start();
-          } catch (err) {
-            isRecording = false;
-            micBtn.classList.remove("recording");
-          }
+          startRecognition();
         }
       });
     }
