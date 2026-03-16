@@ -377,7 +377,7 @@
           micBtn.classList.remove("recording");
           recognition = null;
           if (e.error === "not-allowed" || e.error === "permission-denied") {
-            addMessage("bot", "Microphone access is blocked. Please tap the address bar → tap the mic/lock icon → set Microphone to Allow, then try again.");
+            addMessage("bot", "Voice recognition was blocked by a browser security policy on this site. Please type your message instead, or contact the site admin.");
           } else if (e.error === "audio-capture") {
             addMessage("bot", "Your microphone couldn't be accessed. Make sure no other app is using it, then try again.");
           } else if (e.error === "service-not-allowed") {
@@ -404,11 +404,29 @@
         if (isTyping) return;
         if (isRecording && recognition) {
           recognition.stop();
+          return;
+        }
+        isRecording = true;
+        micBtn.classList.add("recording");
+        micBtn.title = "Listening… click to stop";
+        window.speechSynthesis && window.speechSynthesis.cancel();
+
+        // Pre-flight: test actual mic access via getUserMedia first.
+        // This catches OS-level blocks (macOS System Settings, Windows Privacy)
+        // and server-side Permissions-Policy headers — which all show as
+        // "Allowed" in Chrome site settings but still block audio capture.
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+              stream.getTracks().forEach(t => t.stop()); // release immediately
+              startRecognition();
+            })
+            .catch(() => {
+              isRecording = false;
+              micBtn.classList.remove("recording");
+              addMessage("bot", "Microphone is blocked at the system level.\n\n• Mac: System Settings → Privacy & Security → Microphone → enable your browser\n• Windows: Settings → Privacy & Security → Microphone → enable your browser\n\nThen refresh the page and try again.");
+            });
         } else {
-          isRecording = true;
-          micBtn.classList.add("recording");
-          micBtn.title = "Listening… click to stop";
-          window.speechSynthesis && window.speechSynthesis.cancel();
           startRecognition();
         }
       });
