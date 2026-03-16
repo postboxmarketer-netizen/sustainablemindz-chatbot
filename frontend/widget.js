@@ -356,22 +356,13 @@
       function startRecognition() {
         recognition = new SR();
         recognition.continuous = false;
-        recognition.interimResults = true;
-        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.lang = navigator.language || "en-US";
         recognition.maxAlternatives = 1;
 
-        let resultReceived = false;
-
         recognition.onresult = (e) => {
-          // Collect all final results
-          let transcript = "";
-          for (let i = e.resultIndex; i < e.results.length; i++) {
-            if (e.results[i].isFinal) {
-              transcript += e.results[i][0].transcript;
-            }
-          }
+          const transcript = e.results[0][0].transcript;
           if (transcript.trim()) {
-            resultReceived = true;
             input.value = transcript.trim();
             input.dispatchEvent(new Event("input"));
             setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
@@ -382,21 +373,21 @@
           micBtn.classList.remove("recording");
           micBtn.title = "Speak your message";
           recognition = null;
-          if (!resultReceived) {
-            // Recording ended but no speech captured — show a gentle hint
-            micBtn.title = "No speech detected — tap to try again";
-          }
         };
         recognition.onerror = (e) => {
           isRecording = false;
           micBtn.classList.remove("recording");
           recognition = null;
           if (e.error === "not-allowed" || e.error === "permission-denied") {
-            addMessage("bot", "Microphone access was blocked. Please allow microphone access in your browser settings, then tap the mic button again.");
+            addMessage("bot", "Microphone access is blocked. Please tap the address bar → tap the mic/lock icon → set Microphone to Allow, then try again.");
+          } else if (e.error === "audio-capture") {
+            addMessage("bot", "Your microphone couldn't be accessed. Make sure no other app is using it, then try again.");
+          } else if (e.error === "service-not-allowed") {
+            addMessage("bot", "Voice input isn't supported on this browser. Try Chrome on desktop or Android, then type your message for now.");
           } else if (e.error === "network") {
             addMessage("bot", "Voice recognition couldn't connect. Please check your internet connection or type your message instead.");
           } else if (e.error === "no-speech") {
-            // silently ignore — onend will show hint
+            // silently ignore
           } else {
             addMessage("bot", `Voice input error (${e.error}). Please type your message instead.`);
           }
