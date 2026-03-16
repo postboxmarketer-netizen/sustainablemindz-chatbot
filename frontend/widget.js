@@ -346,7 +346,11 @@
     const micBtn = document.getElementById("sm-mic-btn");
 
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
+    // Detect Permissions-Policy: microphone=() header (Chrome exposes this via featurePolicy)
+    const _fp = document.featurePolicy || document.permissionsPolicy;
+    const micPolicyBlocked = _fp ? !_fp.allowsFeature("microphone") : false;
+
+    if (!SR || micPolicyBlocked) {
       micBtn.style.display = "none";
     } else {
       let recognition = null;
