@@ -280,6 +280,13 @@
     const messagesEl = wrapper.querySelector("#sm-chat-messages");
     messagesEl.style.cssText += ";overflow-y:scroll!important;min-height:0!important;flex:1 1 0!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior:contain!important;";
 
+    // Override WordPress theme mouse-wheel capture — scroll the messages div directly
+    messagesEl.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      messagesEl.scrollTop += e.deltaY;
+    }, { passive: false });
+
     // Wire up
     const bubble   = document.getElementById("sm-chat-bubble");
     const window_  = document.getElementById("sm-chat-window");
@@ -391,7 +398,7 @@
           } else if (e.error === "no-speech") {
             // silently ignore — onend will show hint
           } else {
-            addMessage("bot", "Voice input isn't available right now. Please type your message instead.");
+            addMessage("bot", `Voice input error (${e.error}). Please type your message instead.`);
           }
         };
 
