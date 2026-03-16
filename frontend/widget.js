@@ -354,20 +354,30 @@
       function startRecognition() {
         recognition = new SR();
         recognition.continuous = false;
-        recognition.interimResults = false;
+        recognition.interimResults = true;   // show real-time transcript as user speaks
         recognition.lang = "en-US";
         recognition.maxAlternatives = 1;
 
         recognition.onstart = () => {
           input.placeholder = "Listening… speak now";
+          input.value = "";
         };
         recognition.onresult = (e) => {
-          const transcript = e.results[0][0].transcript;
-          if (transcript.trim()) {
-            input.value = transcript.trim();
+          let interim = "";
+          let final_ = "";
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            const t = e.results[i][0].transcript;
+            if (e.results[i].isFinal) { final_ += t; }
+            else { interim += t; }
+          }
+          // Show words appearing in real-time while speaking
+          input.value = final_ || interim;
+          input.dispatchEvent(new Event("input"));
+          // Auto-submit when speech ends (Siri-like)
+          if (final_.trim()) {
+            input.value = final_.trim();
             input.placeholder = "Ask about our services…";
-            input.dispatchEvent(new Event("input"));
-            setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
+            setTimeout(() => form.dispatchEvent(new Event("submit")), 200);
           }
         };
         recognition.onend = () => {
@@ -381,6 +391,7 @@
           isRecording = false;
           micBtn.classList.remove("recording");
           input.placeholder = "Ask about our services…";
+          input.value = "";
           recognition = null;
           if (e.error === "not-allowed" || e.error === "permission-denied") {
             addMessage("bot", "Microphone access was denied. Tap the lock icon 🔒 in your browser address bar → set Microphone to Allow → then refresh and try again.");
@@ -417,7 +428,25 @@
         micBtn.classList.add("recording");
         micBtn.title = "Listening… click to stop";
         window.speechSynthesis && window.speechSynthesis.cancel();
-        startRecognition();
+
+        // iOS Safari requires getUserMedia to be called first to activate the mic
+        // permission before SpeechRecognition will work. We always call startRecognition
+        // regardless of whether getUserMedia succeeds or fails — SpeechRecognition has
+        // its own permission handling and will fire onerror if access is truly denied.
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+              stream.getTracks().forEach(t => t.stop());
+              startRecognition();
+            })
+            .catch(() => {
+              // getUserMedia failed (browser/OS block or Permissions-Policy header).
+              // Still try SpeechRecognition — it may work independently on some browsers.
+              startRecognition();
+            });
+        } else {
+          startRecognition();
+        }
       });
     }
 
