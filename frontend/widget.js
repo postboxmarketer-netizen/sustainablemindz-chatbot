@@ -19,7 +19,6 @@
   let isOpen = false;
   let isTyping = false;
   let isRecording = false;
-  let ttsEnabled = false;
 
   // ── Styles ─────────────────────────────────────────────────────────────────
   const styles = `
@@ -189,15 +188,28 @@
       50%       { box-shadow: 0 0 0 8px rgba(229,57,53,0); }
     }
 
-    #sm-footer-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-    #sm-powered-by { flex: 1; text-align: center; font-size: 11px; color: #bbb; }
-    #sm-tts-btn {
-      background: none; border: none; cursor: pointer; padding: 4px; line-height: 1;
-      display: flex; align-items: center; justify-content: center;
+    .sm-speak-btn {
+      background: none; border: none; cursor: pointer; padding: 2px;
       opacity: 0.35; transition: opacity 0.2s; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; align-self: flex-end;
     }
-    #sm-tts-btn.active { opacity: 1; }
-    #sm-tts-btn svg { width: 16px; height: 16px; fill: ${BRAND_COLOR}; display: block; }
+    .sm-speak-btn:hover { opacity: 0.75; }
+    .sm-speak-btn.speaking { opacity: 1; }
+    .sm-speak-btn svg { width: 14px; height: 14px; fill: ${BRAND_COLOR}; display: block; }
+
+    #sm-quick-replies {
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 8px;
+    }
+    .sm-quick-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: ${BRAND_COLOR}; color: #fff; border: none; border-radius: 20px;
+      padding: 7px 13px; font-size: 12px; font-weight: 500; cursor: pointer;
+      transition: background 0.18s, transform 0.1s; white-space: nowrap;
+      line-height: 1;
+    }
+    .sm-quick-btn:hover { background: ${BRAND_COLOR_DARK}; transform: translateY(-1px); }
+    .sm-quick-btn svg { width: 13px; height: 13px; fill: white; flex-shrink: 0; }
 
     @media (max-width: 440px) {
       #sm-chat-window { right: 12px; bottom: 88px; width: calc(100vw - 24px); }
@@ -252,12 +264,6 @@
               <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
             </button>
           </form>
-          <div id="sm-footer-bar">
-            <div id="sm-powered-by">Powered by Claude AI</div>
-            <button id="sm-tts-btn" type="button" title="Voice replies off" aria-label="Toggle voice replies">
-              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.7-4.13v8.27c1.66-.45 2.7-1.98 2.7-4.14zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/></svg>
-            </button>
-          </div>
         </div>
       </div>
     `;
@@ -323,7 +329,6 @@
 
     // ── Voice Input (Speech-to-Text) ───────────────────────────────────────
     const micBtn = document.getElementById("sm-mic-btn");
-    const ttsBtn = document.getElementById("sm-tts-btn");
 
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
@@ -382,12 +387,6 @@
       window.speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    ttsBtn.addEventListener("click", () => {
-      ttsEnabled = !ttsEnabled;
-      ttsBtn.classList.toggle("active", ttsEnabled);
-      ttsBtn.title = ttsEnabled ? "Voice replies on" : "Voice replies off";
-      if (!ttsEnabled) window.speechSynthesis && window.speechSynthesis.cancel();
-    });
 
     // ── Message Rendering ──────────────────────────────────────────────────
     function renderMarkdown(escaped) {
@@ -425,8 +424,13 @@
 
     function linkify(str) {
       return str
+        // Markdown links [text](url)
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+          '<a href="$2" target="_blank" rel="noopener" style="color:#682575;text-decoration:underline;font-weight:500;">$1</a>')
+        // Emails
         .replace(/([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g,
           '<a href="mailto:$1" style="color:inherit;text-decoration:underline;">$1</a>')
+        // Phone numbers
         .replace(/(\+?[\d\s\-().]{7,20}\d)/g, (match) => {
           const digits = match.replace(/\D/g, "");
           if (digits.length < 7 || digits.length > 15) return match;
@@ -441,13 +445,30 @@
       const content = role === "bot"
         ? linkify(renderMarkdown(escaped))
         : escaped.replace(/\n/g, "<br>");
+      const speakBtnHtml = role === "bot" ? `
+        <button class="sm-speak-btn" title="Listen" aria-label="Read aloud">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.7-4.13v8.27c1.66-.45 2.7-1.98 2.7-4.14zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/></svg>
+        </button>` : "";
       msg.innerHTML = `
         <div class="sm-msg-avatar">${role === "bot" ? `<img src="${LOGO_URL}" alt="logo" style="width:24px;height:24px;object-fit:contain;">` : "👤"}</div>
         <div class="sm-bubble">${content}</div>
+        ${speakBtnHtml}
       `;
+      if (role === "bot") {
+        const btn = msg.querySelector(".sm-speak-btn");
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("speaking")) {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            btn.classList.remove("speaking");
+          } else {
+            document.querySelectorAll(".sm-speak-btn.speaking").forEach(b => b.classList.remove("speaking"));
+            btn.classList.add("speaking");
+            speakText(text, () => btn.classList.remove("speaking"));
+          }
+        });
+      }
       messages.appendChild(msg);
       scrollToBottom();
-      if (role === "bot") speakText(text);
     }
 
     function showTyping() {
@@ -473,18 +494,26 @@
       });
     }
 
-    function speakText(text) {
-      if (!ttsEnabled || !window.speechSynthesis) return;
+    function speakText(text, onEnd) {
+      if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
       const plain = text.replace(/<[^>]+>/g, "").replace(/\n/g, " ");
       const utt = new SpeechSynthesisUtterance(plain);
 
-      // Use female Indian English voice (Veena on macOS, Heera on Windows)
-      const femaleIndianNames = /veena|heera|raveena|kalpana|priya|neerja/i;
-      const voice = ttsVoices.find(v => v.lang === "en-IN" && femaleIndianNames.test(v.name)) || null;
+      // Priority: enhanced female → British female → Australian female → any English female → default
+      const femaleNames = /female|woman|girl|samantha|karen|moira|kate|hazel|zira|susan|victoria|fiona|tessa|serena|alice/i;
+      const voice =
+        ttsVoices.find(v => /en-(GB|AU|US)/i.test(v.lang) && /enhanced|premium/i.test(v.name) && femaleNames.test(v.name)) ||
+        ttsVoices.find(v => v.lang === "en-GB" && femaleNames.test(v.name)) ||
+        ttsVoices.find(v => v.lang === "en-AU" && femaleNames.test(v.name)) ||
+        ttsVoices.find(v => v.lang === "en-GB") ||
+        ttsVoices.find(v => /^en/i.test(v.lang) && femaleNames.test(v.name)) ||
+        null;
+
       if (voice) { utt.voice = voice; utt.lang = voice.lang; }
-      utt.rate = 0.95;
-      utt.pitch = 1.1; // slightly higher pitch for a feminine tone
+      utt.rate = 0.92;
+      utt.pitch = 1.05;
+      if (onEnd) utt.onend = onEnd;
       window.speechSynthesis.speak(utt);
     }
 
@@ -542,6 +571,33 @@
 
     // ── Welcome Message ────────────────────────────────────────────────────
     addMessage("bot", WELCOME_MESSAGE);
+
+    // ── Quick Reply Service Buttons ────────────────────────────────────────
+    const services = [
+      { label: "SEO", icon: `<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`, query: "Tell me about your SEO services" },
+      { label: "Web Design", icon: `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>`, query: "Tell me about your web design services" },
+      { label: "Social Media", icon: `<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>`, query: "Tell me about your social media marketing" },
+      { label: "Branding", icon: `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`, query: "Tell me about your branding services" },
+      { label: "Digital Ads", icon: `<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>`, query: "Tell me about your digital advertising services" },
+      { label: "Lead Generation", icon: `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`, query: "Tell me about your lead generation services" },
+    ];
+
+    const quickDiv = document.createElement("div");
+    quickDiv.id = "sm-quick-replies";
+    services.forEach(({ label, icon, query }) => {
+      const btn = document.createElement("button");
+      btn.className = "sm-quick-btn";
+      btn.innerHTML = `${icon}${label}`;
+      btn.addEventListener("click", () => {
+        quickDiv.remove();
+        input.value = query;
+        input.dispatchEvent(new Event("input"));
+        form.dispatchEvent(new Event("submit"));
+      });
+      quickDiv.appendChild(btn);
+    });
+    messages.appendChild(quickDiv);
+    scrollToBottom();
 
     // Show badge on load (after 3 seconds) to draw attention
     setTimeout(() => {
