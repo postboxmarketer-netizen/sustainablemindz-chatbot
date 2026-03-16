@@ -71,6 +71,7 @@
       background: #fff; border-radius: 16px;
       box-shadow: 0 8px 40px rgba(0,0,0,0.18);
       display: flex; flex-direction: column; overflow: hidden;
+      touch-action: none;
       transform: scale(0.95) translateY(10px); opacity: 0;
       transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
       pointer-events: none;
@@ -115,10 +116,13 @@
 
     #sm-chat-messages {
       flex: 1 1 0 !important; min-height: 0 !important;
-      overflow-y: auto !important; overflow-x: hidden !important;
+      overflow-y: scroll !important; overflow-x: hidden !important;
       padding: 16px 16px 8px;
       display: flex !important; flex-direction: column; gap: 12px;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      overscroll-behavior: contain;
     }
     #sm-chat-messages::-webkit-scrollbar { width: 4px; }
     #sm-chat-messages::-webkit-scrollbar-track { background: transparent; }
@@ -274,7 +278,7 @@
 
     // Force scroll styles via JS to override any WordPress theme interference
     const messagesEl = wrapper.querySelector("#sm-chat-messages");
-    messagesEl.style.cssText += ";overflow-y:scroll!important;min-height:0!important;flex:1 1 0!important;";
+    messagesEl.style.cssText += ";overflow-y:scroll!important;min-height:0!important;flex:1 1 0!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior:contain!important;";
 
     // Wire up
     const bubble   = document.getElementById("sm-chat-bubble");
@@ -345,14 +349,24 @@
       function startRecognition() {
         recognition = new SR();
         recognition.continuous = false;
-        recognition.interimResults = false;
+        recognition.interimResults = true;
         recognition.lang = "en-US";
+        recognition.maxAlternatives = 1;
+
+        let resultReceived = false;
 
         recognition.onresult = (e) => {
-          const transcript = e.results[0][0].transcript;
-          input.value = transcript;
-          input.dispatchEvent(new Event("input"));
+          // Collect all final results
+          let transcript = "";
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            if (e.results[i].isFinal) {
+              transcript += e.results[i][0].transcript;
+            }
+          }
           if (transcript.trim()) {
+            resultReceived = true;
+            input.value = transcript.trim();
+            input.dispatchEvent(new Event("input"));
             setTimeout(() => form.dispatchEvent(new Event("submit")), 150);
           }
         };
@@ -361,15 +375,21 @@
           micBtn.classList.remove("recording");
           micBtn.title = "Speak your message";
           recognition = null;
+          if (!resultReceived) {
+            // Recording ended but no speech captured — show a gentle hint
+            micBtn.title = "No speech detected — tap to try again";
+          }
         };
         recognition.onerror = (e) => {
           isRecording = false;
           micBtn.classList.remove("recording");
           recognition = null;
           if (e.error === "not-allowed" || e.error === "permission-denied") {
-            addMessage("bot", "Microphone access was blocked. Please click the 🔒 icon in your browser address bar, set Microphone to Allow, then click the mic button again.");
+            addMessage("bot", "Microphone access was blocked. Please allow microphone access in your browser settings, then tap the mic button again.");
+          } else if (e.error === "network") {
+            addMessage("bot", "Voice recognition couldn't connect. Please check your internet connection or type your message instead.");
           } else if (e.error === "no-speech") {
-            // silently ignore
+            // silently ignore — onend will show hint
           } else {
             addMessage("bot", "Voice input isn't available right now. Please type your message instead.");
           }
@@ -461,9 +481,11 @@
     function addMessage(role, text) {
       const msg = document.createElement("div");
       msg.className = `sm-msg ${role}`;
-      const escaped = escapeHtml(text);
+      // Pre-process: rejoin markdown links split across lines e.g. [text]\n(url)
+      const clean = role === "bot" ? text.replace(/\]\s*\n+\s*\(/g, '](') : text;
+      const escaped = escapeHtml(clean);
       const content = role === "bot"
-        ? linkify(renderMarkdown(escaped))
+        ? renderMarkdown(linkify(escaped))  // linkify FIRST on full text, then split by lines
         : escaped.replace(/\n/g, "<br>");
       const speakBtnHtml = role === "bot" ? `
         <button class="sm-speak-btn" title="Listen" aria-label="Read aloud">
