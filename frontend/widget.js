@@ -1,5 +1,5 @@
 /**
- * Sustainable Mindz Chat Widget
+ * Sustainable Mindz Chat Widget v2.1
  * Self-contained — no external dependencies
  * Usage: <script src="widget.js" data-api="https://your-backend-url"></script>
  */
@@ -71,7 +71,7 @@
       background: #fff; border-radius: 16px;
       box-shadow: 0 8px 40px rgba(0,0,0,0.18);
       display: flex; flex-direction: column; overflow: hidden;
-      touch-action: none;
+      touch-action: pan-y;
       transform: scale(0.95) translateY(10px); opacity: 0;
       transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
       pointer-events: none;
