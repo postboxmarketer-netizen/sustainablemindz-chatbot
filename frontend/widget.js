@@ -347,9 +347,16 @@
         micBtn.classList.remove("recording");
         micBtn.title = "Speak your message";
       };
-      recognition.onerror = () => {
+      recognition.onerror = (e) => {
         isRecording = false;
         micBtn.classList.remove("recording");
+        if (e.error === "not-allowed" || e.error === "permission-denied") {
+          addMessage("bot", "Microphone access was blocked. Please click the 🔒 icon in your browser address bar and allow microphone access, then try again.");
+        } else if (e.error === "no-speech") {
+          // silently ignore — user just didn't speak
+        } else {
+          addMessage("bot", "Voice input isn't available right now. Please type your message instead.");
+        }
       };
 
       micBtn.addEventListener("click", () => {
@@ -461,7 +468,9 @@
     }
 
     function scrollToBottom() {
-      messages.scrollTop = messages.scrollHeight;
+      requestAnimationFrame(() => {
+        messages.scrollTop = messages.scrollHeight;
+      });
     }
 
     function speakText(text) {
