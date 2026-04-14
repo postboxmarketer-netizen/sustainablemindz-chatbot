@@ -1,0 +1,19 @@
+# Secrets — never upload these
+.env
+token.json
+oauth-client.json
+service-account.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
